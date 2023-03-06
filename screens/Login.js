@@ -12,7 +12,7 @@ import {
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase";
 
-const backImage = require("../assets/backImage.png");
+const backImage = require("../assets/back-image.png");
 
 export default function Login({ navigration }) {
   const [email, setEmail] = useState("");
