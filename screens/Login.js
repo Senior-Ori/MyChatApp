@@ -15,7 +15,7 @@ import { auth } from "../config/firebase";
 
 const backImage = require("../assets/back-image.png");
 
-export default function Login({ navigration }) {
+export default function Login({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -52,6 +52,28 @@ export default function Login({ navigration }) {
           value={password}
           onChangeText={(text) => setPassword(text)}
         />
+        <TouchableOpacity style={styles.button} onPress={onHandleLogin}>
+          <Text style={{ fontWeight: "bold", color: "#fff", fontSize: 18 }}>
+            Log In
+          </Text>
+        </TouchableOpacity>
+        <View
+          style={{
+            marginTop: 20,
+            flexDirection: "row",
+            alignItems: "center",
+            alignSelf: "center",
+          }}
+        >
+          <Text style={{ color: "gray", fontWeight: "600", fontSize: 14 }}>
+            Don't have an account?{" "}
+          </Text>
+          <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
+            <Text style={{ color: "#f57c00", fontWeight: "600", fontSize: 14 }}>
+              Sign Up
+            </Text>
+          </TouchableOpacity>
+        </View>
         {/* <Text style={styles.title}>Password</Text> */}
       </SafeAreaView>
     </View>
@@ -69,6 +91,7 @@ const styles = StyleSheet.create({
     color: "orange",
     alignSelf: "center",
     paddingBottom: 24,
+    paddingTop: 24 + 36,
   },
   input: {
     backgroundColor: "#F6F7FB",
