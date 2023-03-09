@@ -1,32 +1,59 @@
-import React, { useState, useEffect } from "react";
-import { Text } from "react-native";
-import * as Notifications from "expo-notifications";
+import React from "react";
+import { View, Text, TextInput, Button } from "react-native";
+import { auth } from "./config/firebase";
 
-export default function App() {
-  useEffect(() => {
-    requestPermissions();
-    scheduleNotification();
-  }, []);
+class Login extends React.Component {
+  state = {
+    email: "",
+    password: "",
+    specialKey: "",
+  };
 
-  async function requestPermissions() {
-    const { status } = await Notifications.requestPermissionsAsync();
-    if (status !== "granted") {
-      alert("Permission to send notifications was denied");
-    }
+  handleLogin = () => {
+    console.log("auth:", auth); // add this line
+    const { email, password } = this.state;
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        // handle successful login here
+      })
+      .catch((error) => {
+        // handle login error here
+      });
+  };
+
+  handleSignup = () => {
+    console.log("auth:", auth); // add this line
+    const { email, password } = this.state;
+    auth
+      .createUserWithEmailAndPassword(email, password)
+      .then(() => {
+        // handle successful signup here
+      })
+      .catch((error) => {
+        // handle signup error here
+      });
+  };
+
+  render() {
+    return (
+      <View>
+        <Text>Email:</Text>
+        <TextInput
+          value={this.state.email}
+          onChangeText={(email) => this.setState({ email })}
+        />
+        <Text>Password:</Text>
+        <TextInput
+          value={this.state.password}
+          onChangeText={(password) => this.setState({ password })}
+          secureTextEntry
+        />
+        <Button title="Login" onPress={this.handleLogin} />
+        <Button title="Signup" onPress={this.handleSignup} />
+      </View>
+    );
   }
-
-  async function scheduleNotification() {
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: "Good morning Ori",
-      },
-      trigger: {
-        hour: 3,
-        minute: 22,
-        repeats: true,
-      },
-    });
-  }
-
-  return <Text>hey GN</Text>;
 }
+
+export default Login;
