@@ -1,78 +1,32 @@
-import React, { useState, useContext, useEffect, createContext } from "react";
-import { View, ActivityIndicator } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import { onAuthStateChanged } from "firebase/auth";
-
-import Chat from "./screens/Chat";
-import Home from "./screens/Home";
-import Login from "./screens/Login";
-import Signup from "./screens/Signup";
-import { auth } from "./config/firebase";
-
-const Stack = createStackNavigator();
-const AuthenticatedUserContext = createContext({});
-
-const AuthenticatedUserProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  return (
-    <AuthenticatedUserContext.Provider value={{ user, setUser }}>
-      {children}
-    </AuthenticatedUserContext.Provider>
-  );
-};
-
-function ChatStack() {
-  return (
-    <Stack.Navigator defaultScreenOptions={Home}>
-      <Stack.Screen name="Home" component={Home} />
-      <Stack.Screen name="Chat" component={Chat} />
-    </Stack.Navigator>
-  );
-}
-function AuthStack() {
-  return (
-    <Stack.Navigator
-      defaultScreenOptions={Login}
-      screenOptions={{ headerShown: false }}
-    >
-      <Stack.Screen name="Login" component={Login} />
-      <Stack.Screen name="Signup" component={Signup} />
-    </Stack.Navigator>
-  );
-}
-
-function RootNavigator() {
-  const { user, setUser } = useContext(AuthenticatedUserContext);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (authenticatedUser) => {
-      authenticatedUser ? setUser(authenticatedUser) : setUser(null);
-      setLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, [user]);
-
-  if (loading) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  }
-
-  return (
-    <NavigationContainer>
-      {user ? <ChatStack /> : <AuthStack />}
-    </NavigationContainer>
-  );
-}
+import React, { useState, useEffect } from "react";
+import { Text } from "react-native";
+import * as Notifications from "expo-notifications";
 
 export default function App() {
-  return (
-    <AuthenticatedUserProvider>
-      <RootNavigator />
-    </AuthenticatedUserProvider>
-  );
+  useEffect(() => {
+    requestPermissions();
+    scheduleNotification();
+  }, []);
+
+  async function requestPermissions() {
+    const { status } = await Notifications.requestPermissionsAsync();
+    if (status !== "granted") {
+      alert("Permission to send notifications was denied");
+    }
+  }
+
+  async function scheduleNotification() {
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "Good morning Ori",
+      },
+      trigger: {
+        hour: 3,
+        minute: 22,
+        repeats: true,
+      },
+    });
+  }
+
+  return <Text>hey GN</Text>;
 }
