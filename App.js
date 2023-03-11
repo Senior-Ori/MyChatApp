@@ -10,50 +10,13 @@ import messaging from "@react-native-firebase/messaging";
 import { TextInput } from "react-native-gesture-handler";
 
 export default function App() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [additionalText, setAdditionalText] = useState("");
-
-  const handleEmailInput = (text) => {
-    setEmail(text);
-  };
-
-  const handlePasswordInput = (text) => {
-    setPassword(text);
-  };
-
-  const handleAdditionalTextInput = (text) => {
-    setAdditionalText(text);
-  };
-
-  const handleSubmit = () => {
-    // do something with the email, password, and additional text
-    console.log(email, password, additionalText);
-  };
   return (
     <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={handleEmailInput}
-        keyboardType="email-address"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={password}
-        onChangeText={handlePasswordInput}
-        secureTextEntry={true}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Additional text"
-        value={additionalText}
-        onChangeText={handleAdditionalTextInput}
-      />
-      <Button style={styles.button} title="Submit" onPress={handleSubmit} />
-      {/* <Register /> */}
+      <View>
+        <Text>puece of text</Text>
+      </View>
+      <Text>Hello world -_-</Text>
+      <Button title="CLICK ME!" />
     </View>
   );
 }
