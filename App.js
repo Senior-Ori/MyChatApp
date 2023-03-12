@@ -15,7 +15,7 @@ export default function App() {
       <View>
         <Text>puece of text</Text>
       </View>
-      <Text>Hello world -_-</Text>
+      <Text style={styles.dummyText}>Hello world -_-</Text>
       <Button title="CLICK ME!" />
     </View>
   );
@@ -36,4 +36,5 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 10,
   },
+  dummyText: { margin: 16, padding: 16, borderWidth: 2, borderColor: "red" },
 });
