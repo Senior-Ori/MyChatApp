@@ -1,27 +1,42 @@
-import React, { useState, useContext, useEffect, createContext } from "react";
-import {
-  View,
-  ActivityIndicator,
-  Text,
-  StyleSheet,
-  Button,
-} from "react-native";
-import messaging from "@react-native-firebase/messaging";
-import { TextInput } from "react-native-gesture-handler";
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, TextInput, Button } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function App() {
   const [enteredGoalText, setEnteredGoalText] = useState("");
   const [courseGoals, setCourseGoals] = useState([]);
 
+  useEffect(() => {
+    retrieveData();
+  }, []);
+
+  const retrieveData = async () => {
+    try {
+      const value = await AsyncStorage.getItem("courseGoals");
+      if (value !== null) {
+        setCourseGoals(JSON.parse(value));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   function goalInputHandler(enteredText) {
     setEnteredGoalText(enteredText);
   }
+
   function addGoalHandler() {
     setCourseGoals((currentCourseGoals) => [
       ...currentCourseGoals,
       enteredGoalText,
     ]);
+    AsyncStorage.setItem(
+      "courseGoals",
+      JSON.stringify([...courseGoals, enteredGoalText])
+    );
+    setEnteredGoalText("");
   }
+
   return (
     <View style={styles.appContainer}>
       <View style={styles.inputContainer}>
@@ -29,6 +44,7 @@ export default function App() {
           style={styles.textInput}
           placeholder="Your course goal!"
           onChangeText={goalInputHandler}
+          value={enteredGoalText}
         />
         <Button title="Add Goal" onPress={addGoalHandler} />
       </View>
@@ -77,23 +93,4 @@ const styles = StyleSheet.create({
   goalText: {
     color: "white",
   },
-  // container: {
-  //   paddingTop: "10%",
-  //   flex: 1,
-  //   marginHorizontal: 20,
-  //   marginVertical: 10,
-  // },
-  // input: {
-  //   borderWidth: 1,
-  //   borderRadius: 5,
-  //   padding: 10,
-  //   marginBottom: 10,
-  // },
-  // button: {
-  //   marginTop: 10,
-  // },
-  // dummyText: { margin: 16, padding: 16, borderWidth: 2, borderColor: "blue" },
-
-  /*
-   */
 });
