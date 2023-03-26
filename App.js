@@ -22,8 +22,12 @@ export default function App() {
     const loadGoalsFromStorage = async () => {
       try {
         const storedGoals = await AsyncStorage.getItem(GOALS_STORAGE_KEY);
-        if (storedGoals !== null) {
+        if (storedGoals !== null && Array.isArray(JSON.parse(storedGoals))) {
           setCourseGoals(JSON.parse(storedGoals));
+          console.log(storedGoals);
+          if (storedGoals !== "[]") {
+            setModalIsVisible(false);
+          }
         }
       } catch (e) {
         console.log("Failed to load goals from storage: ", e);
@@ -32,7 +36,6 @@ export default function App() {
     };
     loadGoalsFromStorage();
   }, []);
-
   useEffect(() => {
     const saveGoalsToStorage = async () => {
       try {
