@@ -10,31 +10,90 @@ import messaging from "@react-native-firebase/messaging";
 import { TextInput } from "react-native-gesture-handler";
 
 export default function App() {
+  const [enteredGoalText, setEnteredGoalText] = useState("");
+  const [courseGoals, setCourseGoals] = useState([]);
+
+  function goalInputHandler(enteredText) {
+    setEnteredGoalText(enteredText);
+  }
+  function addGoalHandler() {
+    setCourseGoals((currentCourseGoals) => [
+      ...currentCourseGoals,
+      enteredGoalText,
+    ]);
+  }
   return (
-    <View style={styles.container}>
-      <View>
-        <Text>puece of text</Text>
+    <View style={styles.appContainer}>
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.textInput}
+          placeholder="Your course goal!"
+          onChangeText={goalInputHandler}
+        />
+        <Button title="Add Goal" onPress={addGoalHandler} />
       </View>
-      <Text style={styles.dummyText}>Hello world -_-</Text>
-      <Button title="CLICK ME!" />
+      <View style={styles.goalsContainer}>
+        {courseGoals.map((goal) => (
+          <View key={goal} style={styles.goalItem}>
+            <Text style={styles.goalText}>{goal}</Text>
+          </View>
+        ))}
+      </View>
     </View>
   );
 }
+
 const styles = StyleSheet.create({
-  container: {
-    paddingTop: "10%",
+  appContainer: {
     flex: 1,
-    marginHorizontal: 20,
-    marginVertical: 10,
+    padding: 50,
+    paddingHorizontal: 16,
   },
-  input: {
+  inputContainer: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 24,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
+  },
+  textInput: {
     borderWidth: 1,
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 10,
+    borderColor: "#ccc",
+    width: "70%",
+    marginRight: 8,
+    padding: 8,
   },
-  button: {
-    marginTop: 10,
+  goalsContainer: {
+    flex: 4,
   },
-  dummyText: { margin: 16, padding: 16, borderWidth: 2, borderColor: "red" },
+  goalItem: {
+    margin: 8,
+    padding: 8,
+    borderRadius: 6,
+    backgroundColor: "#5e0acc",
+  },
+  goalText: {
+    color: "white",
+  },
+  // container: {
+  //   paddingTop: "10%",
+  //   flex: 1,
+  //   marginHorizontal: 20,
+  //   marginVertical: 10,
+  // },
+  // input: {
+  //   borderWidth: 1,
+  //   borderRadius: 5,
+  //   padding: 10,
+  //   marginBottom: 10,
+  // },
+  // button: {
+  //   marginTop: 10,
+  // },
+  // dummyText: { margin: 16, padding: 16, borderWidth: 2, borderColor: "blue" },
+
+  /*
+   */
 });
