@@ -1,18 +1,34 @@
 import React, { useState, useContext, useEffect, createContext } from "react";
-import { View, ActivityIndicator, StyleSheet, FlatList } from "react-native";
+import {
+  View,
+  ActivityIndicator,
+  StyleSheet,
+  FlatList,
+  Button,
+} from "react-native";
 import messaging from "@react-native-firebase/messaging";
 
 import GoalItem from "./components/GoalItem";
 import GoalInput from "./components/GoalInput";
 
 export default function App() {
+  const [modalIsVisible, setModalIsVisible] = useState(false);
   const [courseGoals, setCourseGoals] = useState([]);
+
+  function startAtGoalHandler() {
+    setModalIsVisible(true);
+  }
+
+  function endAddGoalHandler() {
+    setModalIsVisible(false);
+  }
 
   function addGoalHandler(enteredGoalText) {
     setCourseGoals((currentCourseGoals) => [
       ...currentCourseGoals,
       { text: enteredGoalText, id: Math.random().toString() },
     ]);
+    endAddGoalHandler();
   }
 
   function deleteGoalHandler(id) {
@@ -23,7 +39,16 @@ export default function App() {
 
   return (
     <View style={styles.appContainer}>
-      <GoalInput onAddGoal={addGoalHandler} />
+      <Button
+        title="Add New Goal"
+        color="#5e0acc"
+        onPress={startAtGoalHandler}
+      />
+      <GoalInput
+        visible={modalIsVisible}
+        onCancel={endAddGoalHandler}
+        onAddGoal={addGoalHandler}
+      />
       <View style={styles.goalsContainer}>
         <FlatList
           data={courseGoals}
@@ -51,6 +76,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 50,
     paddingHorizontal: 16,
+    backgroundColor: "#E9C46A",
   },
 
   goalsContainer: {
