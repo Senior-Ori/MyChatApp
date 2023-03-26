@@ -2,24 +2,29 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, Pressable } from "react-native";
 
 function GoalItem(props) {
-  const [unixTime, setUnixTime] = useState(0);
+  const [mailReceived, setMailReceived] = useState("");
   const [timeDifference, setTimeDifference] = useState("");
   useEffect(() => {
     const intervalId = setInterval(() => {
       fetch(
-        `https://ori-projects-default-rtdb.europe-west1.firebasedatabase.app/esp32project/sensor${props.text}/1/unixtime.json`
+        `https://ori-projects-default-rtdb.europe-west1.firebasedatabase.app/esp32project/sensor${props.text}.json`
       )
         .then((response) => response.json())
         .then((data) => {
           const currentTime = Math.floor(Date.now() / 1000);
 
-          const difference = currentTime - data;
+          const difference = currentTime - data[1].unixtime;
           const hours = Math.floor(difference / 3600);
           const minutes = Math.floor((difference % 3600) / 60);
           const seconds = difference % 60;
-          setTimeDifference(
-            `${hours} hours, ${minutes} minutes, ${seconds} seconds`
-          );
+          setMailReceived(data[0]);
+          if (mailReceived) {
+            setTimeDifference(
+              `דואר נשלח לפני ${hours} שעות, ${minutes} דקות ו${seconds} שניות.`
+            );
+          } else {
+            setTimeDifference(`תיבת הדואר מס'${props.text} הינה רייקה`);
+          }
           console.log(
             `\ncurrent unixtime:${currentTime}\nperiod unixtime:${difference}\nperiod time:${hours}:${minutes}:${seconds}\n`
           );
@@ -30,7 +35,7 @@ function GoalItem(props) {
   }, []);
 
   return (
-    <View style={styles.goalItem}>
+    <View style={!mailReceived ? styles.goalItem : styles.mailAwaiting}>
       <Pressable
         android_ripple={{ color: "#ddd" }}
         onPress={props.onDeleteItem.bind(this, props.id)}
@@ -43,10 +48,15 @@ function GoalItem(props) {
 }
 
 const styles = StyleSheet.create({
+  mailAwaiting: {
+    margin: 8,
+    borderRadius: 6,
+    backgroundColor: "#2A9D8F",
+  },
   goalItem: {
     margin: 8,
     borderRadius: 6,
-    backgroundColor: "#5e0acc",
+    backgroundColor: "#264653",
   },
   goalText: {
     padding: 8,
