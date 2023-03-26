@@ -6,6 +6,7 @@ import {
   FlatList,
   Button,
 } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import messaging from "@react-native-firebase/messaging";
 
 import GoalItem from "./components/GoalItem";
@@ -38,36 +39,39 @@ export default function App() {
   }
 
   return (
-    <View style={styles.appContainer}>
-      <Button
-        title="Add New Goal"
-        color="#5e0acc"
-        onPress={startAtGoalHandler}
-      />
-      <GoalInput
-        visible={modalIsVisible}
-        onCancel={endAddGoalHandler}
-        onAddGoal={addGoalHandler}
-      />
-      <View style={styles.goalsContainer}>
-        <FlatList
-          data={courseGoals}
-          renderItem={(itemData) => {
-            return (
-              <GoalItem
-                text={itemData.item.text}
-                id={itemData.item.id}
-                onDeleteItem={deleteGoalHandler}
-              />
-            );
-          }}
-          keyExtractor={(item, index) => {
-            return item.id;
-          }}
-          alwaysBounceVertical={false}
+    <>
+      <StatusBar style="light" />
+      <View style={styles.appContainer}>
+        <Button
+          title="Add New Goal"
+          color="#5e0acc"
+          onPress={startAtGoalHandler}
         />
+        <GoalInput
+          visible={modalIsVisible}
+          onCancel={endAddGoalHandler}
+          onAddGoal={addGoalHandler}
+        />
+        <View style={styles.goalsContainer}>
+          <FlatList
+            data={courseGoals}
+            renderItem={(itemData) => {
+              return (
+                <GoalItem
+                  text={itemData.item.text}
+                  id={itemData.item.id}
+                  onDeleteItem={deleteGoalHandler}
+                />
+              );
+            }}
+            keyExtractor={(item, index) => {
+              return item.id;
+            }}
+            alwaysBounceVertical={false}
+          />
+        </View>
       </View>
-    </View>
+    </>
   );
 }
 
