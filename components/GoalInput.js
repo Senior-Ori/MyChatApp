@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { StyleSheet, View, Button, Modal, Image } from "react-native";
+import { StyleSheet, View, Button, Modal, Image, Text } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 
 function GoalInput(props) {
@@ -35,6 +35,10 @@ function GoalInput(props) {
           onChangeText={goalInputHandler}
           value={enteredGoalText}
         />
+      </View>
+      <View style={{ alignItems: "center" }}>
+        <Text>created by Ori Loberbaum, 2023-2030</Text>
+        <Text>smart mail box project</Text>
       </View>
     </Modal>
   );

@@ -2,8 +2,8 @@ import "dotenv/config";
 
 export default {
   expo: {
-    name: "ChatApp-Tutorial",
-    slug: "ChatApp-Tutorial",
+    name: "Ori-SmartMails",
+    slug: "ori-smart-mails",
     version: "1.0.0",
     orientation: "portrait",
     icon: "./assets/icon.png",
@@ -18,6 +18,8 @@ export default {
       supportsTablet: true,
     },
     android: {
+      package: "com.yourcompany.yourappname",
+      versionCode: 1,
       adaptiveIcon: {
         foregroundImage: "./assets/adaptive-icon.png",
         backgroundColor: "#ffffff",
@@ -33,6 +35,9 @@ export default {
       storageBucket: process.env.STORAGE_BUCKET,
       messagingSenderId: process.env.MESSAGING_SENDER_ID,
       appId: process.env.APP_ID,
+      eas: {
+        projectId: "3d51b23e-6b65-43b9-8d6c-6df02d3d2916",
+      },
     },
   },
 };
