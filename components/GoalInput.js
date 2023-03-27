@@ -23,19 +23,15 @@ function GoalInput(props) {
         />
         <View style={styles.buttonContainer}>
           <View style={styles.button}>
-            <Button
-              title="Add Goal"
-              onPress={addGoalHandler}
-              color={"#2A9D8F"}
-            />
+            <Button title="אישור" onPress={addGoalHandler} color={"#2A9D8F"} />
           </View>
           <View style={styles.button}>
-            <Button title="Cancel" onPress={props.onCancel} color={"#E76F51"} />
+            <Button title="חזור" onPress={props.onCancel} color={"#E76F51"} />
           </View>
         </View>
         <TextInput
           style={styles.textInput}
-          placeholder="Your course goal!"
+          placeholder="רשום את מס' תיבת הדואר שקבלת."
           onChangeText={goalInputHandler}
           value={enteredGoalText}
         />

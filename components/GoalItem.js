@@ -18,15 +18,15 @@ function GoalItem(props) {
           const minutes = Math.floor((difference % 3600) / 60);
           const seconds = difference % 60;
           setMailReceived(data[0]);
-          if (mailReceived) {
+          if (data[0]) {
             setTimeDifference(
-              `דואר נשלח לפני ${hours} שעות, ${minutes} דקות ו${seconds} שניות.`
+              `📬 דואר נשלח לתיבה מס'${props.text} לפני ${hours} שעות, ${minutes} דקות ו${seconds} שניות.`
             );
           } else {
-            setTimeDifference(`תיבת הדואר מס'${props.text} הינה רייקה`);
+            setTimeDifference(`✉️ תיבת הדואר מס'${props.text} הינה רייקה`);
           }
           console.log(
-            `\ncurrent unixtime:${currentTime}\nperiod unixtime:${difference}\nperiod time:${hours}:${minutes}:${seconds}\n`
+            `\ncurrent unixtime:${currentTime}\nperiod unixtime:${difference}\nperiod time:${hours}:${minutes}:${seconds}\nmail-received:${mailReceived}`
           );
         })
         .catch((error) => console.error(error));
