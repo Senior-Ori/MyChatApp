@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, Pressable } from "react-native";
+import { StyleSheet, View, Text, Pressable, Image } from "react-native";
 
 function GoalItem(props) {
   const [mailReceived, setMailReceived] = useState("");
   const [timeDifference, setTimeDifference] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const types = ["mail", "mailbox", "post mail", "mail letter"];
+
   useEffect(() => {
     const intervalId = setInterval(() => {
       fetch(
@@ -18,9 +21,11 @@ function GoalItem(props) {
           const minutes = Math.floor((difference % 3600) / 60);
           const seconds = difference % 60;
           setMailReceived(data[0]);
-          if (data[0]) {
+          if (!data[0]) {
             setTimeDifference(
-              `📬 דואר נשלח לתיבה מס'${props.text} לפני ${hours} שעות, ${minutes} דקות ו${seconds} שניות.`
+              `📬 דואר נשלח לתיבה מס'${props.text} לפני ${
+                hours && "{תקלה: השרת איטי או מלא}"
+              } שעות, ${minutes} דקות ו${seconds} שניות.`
             );
           } else {
             setTimeDifference(`✉️ תיבת הדואר מס'${props.text} הינה רייקה`);
@@ -34,8 +39,17 @@ function GoalItem(props) {
     return () => clearInterval(intervalId);
   }, []);
 
+  useEffect(() => {
+    fetch(`https://source.unsplash.com/900x900/?${types[props.text - 1]}`)
+      .then((response) => setImageUrl(response.url))
+      .catch((error) => console.error(error));
+  }, []);
+
   return (
-    <View style={!mailReceived ? styles.goalItem : styles.mailAwaiting}>
+    <View style={mailReceived ? styles.goalItem : styles.mailAwaiting}>
+      <View style={styles.imageContainer}>
+        <Image source={{ uri: imageUrl }} style={styles.image} />
+      </View>
       <Pressable
         android_ripple={{ color: "#ddd" }}
         onPress={props.onDeleteItem.bind(this, props.id)}
@@ -61,6 +75,22 @@ const styles = StyleSheet.create({
   goalText: {
     padding: 8,
     color: "white",
+  },
+  imageContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+
+    // height: "100%",
+    padding: 8,
+    width: "100%",
+    // aspectRatio: "auto",
+    // aspectRatio: "auto",
+  },
+  image: {
+    // height: 80,
+    width: "95%",
+    borderRadius: 5,
+    aspectRatio: 3 / 2,
   },
 });
 
