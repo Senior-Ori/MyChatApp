@@ -4,7 +4,7 @@ import { StyleSheet, View, Text, Pressable, Image } from "react-native";
 function GoalItem(props) {
   const [mailReceived, setMailReceived] = useState("");
   const [timeDifference, setTimeDifference] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState("www.image.com");
   const types = ["mail", "mailbox", "post mail", "mail letter"];
 
   useEffect(() => {
@@ -24,7 +24,7 @@ function GoalItem(props) {
           if (!data[0]) {
             setTimeDifference(
               `📬 דואר נשלח לתיבה מס'${props.text} לפני ${
-                hours && "{תקלה: השרת איטי או מלא}"
+                hours !== NaN ? hours : "{תקלה: השרת איטי או מלא}"
               } שעות, ${minutes} דקות ו${seconds} שניות.`
             );
           } else {
@@ -48,7 +48,9 @@ function GoalItem(props) {
   return (
     <View style={mailReceived ? styles.goalItem : styles.mailAwaiting}>
       <View style={styles.imageContainer}>
-        <Image source={{ uri: imageUrl }} style={styles.image} />
+        {!mailReceived && (
+          <Image source={{ uri: imageUrl }} style={styles.image} />
+        )}
       </View>
       <Pressable
         android_ripple={{ color: "#ddd" }}
