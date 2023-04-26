@@ -8,67 +8,64 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StatusBar } from "expo-status-bar";
-import GoalItem from "./components/GoalItem";
-import GoalInput from "./components/GoalInput";
+import MailItem from "./components/MailInput";
+import MailInput from "./components/MailInput";
 
 const GOALS_STORAGE_KEY = "MY_APP_GOALS_STORAGE_KEY";
 
 export default function App() {
   const [modalIsVisible, setModalIsVisible] = useState(true);
-  const [courseGoals, setCourseGoals] = useState([]);
+  const [dataMail, setDataMail] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const loadGoalsFromStorage = async () => {
+    const loadMailsFromStorage = async () => {
       try {
-        const storedGoals = await AsyncStorage.getItem(GOALS_STORAGE_KEY);
-        if (storedGoals !== null && Array.isArray(JSON.parse(storedGoals))) {
-          setCourseGoals(JSON.parse(storedGoals));
-          console.log(storedGoals);
-          if (storedGoals !== "[]") {
+        const storedMails = await AsyncStorage.getItem(GOALS_STORAGE_KEY);
+        if (storedMails !== null && Array.isArray(JSON.parse(storedMails))) {
+          setDataMail(JSON.parse(storedMails));
+          console.log(storedMails);
+          if (storedMails !== "[]") {
             setModalIsVisible(false);
           }
         }
       } catch (e) {
-        console.log("Failed to load goals from storage: ", e);
+        console.log("Failed to load mails from storage: ", e);
       }
       setIsLoading(false);
     };
-    loadGoalsFromStorage();
+    loadMailsFromStorage();
   }, []);
   useEffect(() => {
-    const saveGoalsToStorage = async () => {
+    const saveMailsToStorage = async () => {
       try {
-        await AsyncStorage.setItem(
-          GOALS_STORAGE_KEY,
-          JSON.stringify(courseGoals)
-        );
+        await AsyncStorage.setItem(GOALS_STORAGE_KEY, JSON.stringify(dataMail));
       } catch (e) {
-        console.log("Failed to save goals to storage: ", e);
+        console.log("Failed to save mails to storage: ", e);
       }
     };
-    saveGoalsToStorage();
-  }, [courseGoals]);
+    saveMailsToStorage();
+  }, [dataMail]);
 
-  function startAtGoalHandler() {
+  function startAtMailHandler() {
     setModalIsVisible(true);
   }
 
-  function endAddGoalHandler() {
+  function endAddMailHandler() {
     setModalIsVisible(false);
   }
 
-  function addGoalHandler(enteredGoalText) {
-    setCourseGoals((currentCourseGoals) => [
-      ...currentCourseGoals,
-      { text: enteredGoalText, id: Math.random().toString() },
+  function addMailHandler(enteredMailText) {
+    setDataMail((currentDataMail) => [
+      ...currentDataMail,
+      { text: enteredMailText, id: Math.random().toString() },
     ]);
-    endAddGoalHandler();
+    endAddMailHandler();
   }
 
-  function deleteGoalHandler(id) {
-    setCourseGoals((currentCourseGoals) => {
-      return currentCourseGoals.filter((goal) => goal.id !== id);
+  function deleteMailHandler(id) {
+    setDataMail((currentDataMail) => {
+      return currentDataMail.filter((mail) => mail.id !== id);
     });
   }
 
@@ -87,22 +84,22 @@ export default function App() {
         <Button
           title="📩 הוסף תיבת דואר חדשה"
           color="#5e0acc"
-          onPress={startAtGoalHandler}
+          onPress={startAtMailHandler}
         />
-        <GoalInput
+        <MailInput
           visible={modalIsVisible}
-          onCancel={endAddGoalHandler}
-          onAddGoal={addGoalHandler}
+          onCancel={endAddMailHandler}
+          onAddMail={addMailHandler}
         />
-        <View style={styles.goalsContainer}>
+        <View style={styles.mailsContainer}>
           <FlatList
-            data={courseGoals}
+            data={dataMail}
             renderItem={(itemData) => {
               return (
-                <GoalItem
+                <MailItem
                   text={itemData.item.text}
                   id={itemData.item.id}
-                  onDeleteItem={deleteGoalHandler}
+                  onDeleteItem={deleteMailHandler}
                 />
               );
             }}
@@ -125,7 +122,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#E9C46A",
   },
 
-  goalsContainer: {
+  mailsContainer: {
     flex: 4,
   },
 

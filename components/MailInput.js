@@ -2,16 +2,16 @@ import { useState } from "react";
 import { StyleSheet, View, Button, Modal, Image, Text } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 
-function GoalInput(props) {
-  const [enteredGoalText, setEnteredGoalText] = useState("");
+function MailInput(props) {
+  const [enteredMailText, setEnteredMailText] = useState("");
 
-  function goalInputHandler(enteredText) {
-    setEnteredGoalText(enteredText);
+  function mailInputHandler(enteredText) {
+    setEnteredMailText(enteredText);
   }
 
-  function addGoalHandler() {
-    props.onAddGoal(enteredGoalText);
-    setEnteredGoalText("");
+  function addMailHandler() {
+    props.onAddMail(enteredMailText);
+    setEnteredMailText("");
   }
 
   return (
@@ -23,7 +23,7 @@ function GoalInput(props) {
         />
         <View style={styles.buttonContainer}>
           <View style={styles.button}>
-            <Button title="אישור" onPress={addGoalHandler} color={"#2A9D8F"} />
+            <Button title="אישור" onPress={addMailHandler} color={"#2A9D8F"} />
           </View>
           <View style={styles.button}>
             <Button title="חזור" onPress={props.onCancel} color={"#E76F51"} />
@@ -32,8 +32,8 @@ function GoalInput(props) {
         <TextInput
           style={styles.textInput}
           placeholder="רשום את מס' תיבת הדואר שקבלת."
-          onChangeText={goalInputHandler}
-          value={enteredGoalText}
+          onChangeText={mailInputHandler}
+          value={enteredMailText}
         />
       </View>
       <View style={{ alignItems: "center" }}>
@@ -44,7 +44,7 @@ function GoalInput(props) {
   );
 }
 
-export default GoalInput;
+export default MailInput;
 const styles = StyleSheet.create({
   inputContainer: {
     flex: 1,

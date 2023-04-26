@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, Pressable, Image } from "react-native";
 
-function GoalItem(props) {
+function MailItem(props) {
   const [mailReceived, setMailReceived] = useState("");
   const [timeDifference, setTimeDifference] = useState("");
   const [imageUrl, setImageUrl] = useState("www.image.com");
@@ -46,7 +46,7 @@ function GoalItem(props) {
   }, []);
 
   return (
-    <View style={mailReceived ? styles.goalItem : styles.mailAwaiting}>
+    <View style={mailReceived ? styles.mailItem : styles.mailAwaiting}>
       <View style={styles.imageContainer}>
         {!mailReceived && (
           <Image source={{ uri: imageUrl }} style={styles.image} />
@@ -57,7 +57,7 @@ function GoalItem(props) {
         onPress={props.onDeleteItem.bind(this, props.id)}
         style={({ pressed }) => pressed && styles.pressedItem}
       >
-        <Text style={styles.goalText}>{timeDifference}</Text>
+        <Text style={styles.mailText}>{timeDifference}</Text>
       </Pressable>
     </View>
   );
@@ -69,12 +69,12 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     backgroundColor: "#2A9D8F",
   },
-  goalItem: {
+  mailItem: {
     margin: 8,
     borderRadius: 6,
     backgroundColor: "#264653",
   },
-  goalText: {
+  mailText: {
     padding: 8,
     color: "white",
   },
@@ -96,4 +96,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GoalItem;
+export default MailItem;
